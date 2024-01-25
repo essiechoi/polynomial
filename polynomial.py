@@ -26,15 +26,39 @@ class Mul:
         self.p2 = p2
     
     def __repr__(self):
-        if isinstance(self.p1, Add):
-            if isinstance(self.p2, Add):
+        if isinstance(self.p1, Add) or isinstance(self.p1, Sub) or isinstance(self.p1, Div):
+            if isinstance(self.p2, Add) or isinstance(self.p2, Sub) or isinstance(self.p2, Div):
                  return "( " + repr(self.p1) + " ) * ( " + repr(self.p2) + " )"
             return "( " + repr(self.p1) + " ) * " + repr(self.p2)
-        if isinstance(self.p2, Add):
+        if isinstance(self.p2, Add) or isinstance(self.p2, Sub) or isinstance(self.p2, Div):
             return repr(self.p1) + " * ( " + repr(self.p2) + " )"
         return repr(self.p1) + " * " + repr(self.p2)
 
+class Div:
+    def __init__(self, p1, p2):
+        self.p1 = p1
+        self.p2 = p2
+    
+    def __repr__(self):
+        if isinstance(self.p1, Add) or isinstance(self.p1, Sub) or isinstance(self.p1, Mul):
+            if isinstance(self.p2, Add) or isinstance(self.p2, Sub) or isinstance(self.p2, Mul):
+                 return "( " + repr(self.p1) + " ) / ( " + repr(self.p2) + " )"
+            return "( " + repr(self.p1) + " ) / " + repr(self.p2)
+        if isinstance(self.p2, Add) or isinstance(self.p2, Sub) or isinstance(self.p2, Mul):
+            return repr(self.p1) + " / ( " + repr(self.p2) + " )"
+        return repr(self.p1) + " / " + repr(self.p2)
+
+class Sub:
+    def __init__(self, p1, p2):
+        self.p1 = p1
+        self.p2 = p2
+    
+    def __repr__(self):
+        return repr(self.p1) + " - " + repr(self.p2)
+
 if __name__ == "__main__" :
 
-    poly = Add( Add( Int(4), Int(3)), Add( X(), Mul( Int(1), Add( Mul(X(), X()), Int(1)))))
+    poly = Add( Add( Int(4), Int(3)), Sub( X(), Mul( Int(1), Add( Mul(X(), X()), Int(1)))))
     print(poly)
+    test = Mul(Int(4), Div (Int(5), Sub(Int(2), Int(2))))
+    print(test)
